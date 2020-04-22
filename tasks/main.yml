@@ -1,0 +1,28 @@
+- include_vars: "../vars/{{ ansible_os_family }}.yml"
+
+- name: add repository
+  yum_repository:
+    name: "dkron"
+    description: "dkron repository"
+    baseurl:  "{{ dkron_yum_repo }}"
+    gpgcheck: no
+  when: ansible_os_family == "RedHat"
+
+- name: install
+  package: name="dkron" state=latest
+
+- name: data directory
+  file:
+    path: "{{ dkron_data_dir }}"
+    state: directory
+
+- name: copy config
+  template: 
+    src: dkron.yml.j2
+    dest: /etc/dkron/dkron.yml
+
+- name: enable and run dkron
+  systemd:
+    name: dkron
+    enabled: yes
+    state: started

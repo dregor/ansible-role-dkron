@@ -1,0 +1,6 @@
+dkron_data_dir: /var/lib/dkron
+dkron_config:
+  server: true
+  bootstrap-expect: 1
+  bind-addr: "127.0.0.1:8946"
+
